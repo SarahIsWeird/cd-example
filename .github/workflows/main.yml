@@ -4,18 +4,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3.1.0
       - name: Setup Java JDK
         uses: actions/setup-java@v3.6.0
         with:
           java-version: 17
           distribution: adopt
-      - name: Gradle Wrapper Validation
+      - name: Validate the Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.5
-      - name: Gradle Build
+      - name: Build the project
         uses: gradle/gradle-build-action@v2.3.3
         with:
           arguments: build
-      - name: Gradle Test
+      - name: Run the project tests
         uses: gradle/gradle-build-action@v2.3.3
         with:
           arguments: test
