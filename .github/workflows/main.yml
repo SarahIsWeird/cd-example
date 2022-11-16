@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: 17
           distribution: adopt
+          cache: gradle
       - name: Validate the Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.5
       - name: Build the project
@@ -45,6 +46,7 @@ jobs:
         with:
           java-version: 17
           distribution: adopt
+          cache: gradle
       - name: Validate the Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.5
       - name: Build the project
@@ -56,7 +58,7 @@ jobs:
         with:
           arguments: distTar
       - name: Install sshpass to pass the ssh password to scp
-        run: apt-get install -y sshpass
+        run: sudo apt-get install -y sshpass
       - name: Copy the .tar file to the VPS
         env:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
