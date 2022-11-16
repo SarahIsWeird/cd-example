@@ -33,3 +33,44 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.3
         with:
           arguments: test
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3.1.0
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.6.0
+        with:
+          java-version: 17
+          distribution: adopt
+      - name: Validate the Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1.0.5
+      - name: Build the project
+        uses: gradle/gradle-build-action@v2.3.3
+        with:
+          arguments: build
+      - name: Generate the .tar file
+        uses: gradle/gradle-build-action@v2.3.3
+        with:
+          arguments: distTar
+      - name: Install sshpass to pass the ssh password to scp
+        run: apt-get install -y sshpass
+      - name: Copy the .tar file to the VPS
+        env:
+          CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
+          CD_SSH_USERNAME: ${{ secrets.CD_SSH_USERNAME }}
+          CD_SSH_PASSWORD: ${{ secrets.CD_SHH_PASSWORD }}
+        run: sshpass -p "$CD_SSH_PASSWORD" scp build/distributions/cd-example.tar "$CD_SSH_USERNAME"@"$CD_SSH_SERVER":/home/cicd/cd-example.tar
+      - name: Deploy the new server
+        env:
+          CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
+          CD_SSH_USERNAME: ${{ secrets.CD_SSH_USERNAME }}
+          CD_SSH_PASSWORD: ${{ secrets.CD_SHH_PASSWORD }}
+        run: sshpass -p "$CD_SSH_PASSWORD" ssh "$CD_SSH_USERNAME"@"$CD_SSH_SERVER" "killall java; \
+          tar -xf cd-example.tar && \
+          rm cd-example.tar && \
+          cd cd-example/bin && \
+          chmod +x cd-example && \
+          ./cd-example &"
