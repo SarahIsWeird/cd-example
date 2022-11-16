@@ -60,6 +60,10 @@ jobs:
       - run: ls && pwd && ls build/distributions
       - name: Install sshpass to pass the ssh password to scp
         run: sudo apt-get install -y sshpass
+      - name: Copy known host into known_hosts
+        env:
+          CD_KNOWN_HOSTS: ${{ secrets.CD_KNOWN_HOSTS }}
+        run: echo $CD_KNOWN_HOSTS >> ~/.ssh/known_hosts
       - name: Copy the .tar file to the VPS
         env:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
