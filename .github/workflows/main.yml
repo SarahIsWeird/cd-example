@@ -57,6 +57,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.3
         with:
           arguments: distTar
+      - run: ls && pwd && ls build/distributions
       - name: Install sshpass to pass the ssh password to scp
         run: sudo apt-get install -y sshpass
       - name: Copy the .tar file to the VPS
@@ -64,7 +65,7 @@ jobs:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
           CD_SSH_USERNAME: ${{ secrets.CD_SSH_USERNAME }}
           CD_SSH_PASSWORD: ${{ secrets.CD_SHH_PASSWORD }}
-        run: sshpass -p "$CD_SSH_PASSWORD" scp build/distributions/cd-example.tar "$CD_SSH_USERNAME"@"$CD_SSH_SERVER":/home/cicd/cd-example.tar
+        run: sshpass -p "$CD_SSH_PASSWORD" scp build/distributions/cd-example.tar "$CD_SSH_USERNAME"@"$CD_SSH_SERVER":/home/$CD_SSH_USERNAME/cd-example.tar
       - name: Deploy the new server
         env:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
