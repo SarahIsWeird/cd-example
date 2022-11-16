@@ -1,5 +1,17 @@
 name: Ktor CI/CD
-on: [push]
+
+on:
+  # Somebody pushes to the main branch
+  push:
+    branches:
+      - main
+  # Somebody creates a PR that merges into the main branch
+  pull_request:
+    branches:
+      - main
+  # Somebody manually runs the workflow
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
