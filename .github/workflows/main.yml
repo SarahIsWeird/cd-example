@@ -75,7 +75,7 @@ jobs:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
           CD_SSH_USERNAME: ${{ secrets.CD_SSH_USERNAME }}
           CD_SSH_PASSWORD: ${{ secrets.CD_SSH_PASSWORD }}
-        run: sshpass -p "$CD_SSH_PASSWORD" ssh "$CD_SSH_USERNAME"@"$CD_SSH_SERVER" "killall java; tar -xf cd-example.tar && rm cd-example.tar && cd cd-example/bin && chmod +x cd-example"
+        run: sshpass -p "$CD_SSH_PASSWORD" ssh "$CD_SSH_USERNAME"@"$CD_SSH_SERVER" "kill -9 $(pgrep -f java); tar -xf cd-example.tar && rm cd-example.tar && cd cd-example/bin && chmod +x cd-example"
       - name: Deploy the new server
         env:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
