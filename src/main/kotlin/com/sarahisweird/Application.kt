@@ -6,7 +6,10 @@ import io.ktor.server.netty.*
 import com.sarahisweird.plugins.*
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
+    val isProd = System.getenv("SERVER_MODE") == "production"
+    val port = if (isProd) 80 else 8080
+
+    embeddedServer(Netty, port = port, host = "0.0.0.0", module = Application::module)
             .start(wait = true)
 }
 
