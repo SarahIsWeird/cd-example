@@ -85,4 +85,4 @@ jobs:
           CD_SSH_SERVER: ${{ secrets.CD_SSH_SERVER }}
           CD_SSH_USERNAME: ${{ secrets.CD_SSH_USERNAME }}
           CD_SSH_PASSWORD: ${{ secrets.CD_SSH_PASSWORD }}
-        run: sshpass -p "$CD_SSH_PASSWORD" ssh "$CD_SSH_USERNAME"@"$CD_SSH_SERVER" "systemctl restart --user cd-example.service"
+        run: sshpass -p "$CD_SSH_PASSWORD" ssh "$CD_SSH_USERNAME"@"$CD_SSH_SERVER" "systemctl enable --user --now cd-example.service"
