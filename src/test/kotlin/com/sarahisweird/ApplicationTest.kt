@@ -1,14 +1,27 @@
 package com.sarahisweird
 
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.routing.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.request.*
-import kotlin.test.*
 import io.ktor.server.testing.*
-import com.sarahisweird.plugins.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
+    @Test
+    fun `root should return Hello World`() = testApplication {
+        // Set up the test application
+        application {
+            module()
+        }
+
+        // Make the actual request
+
+        val response = client.get("/")
+
+        // Compare the response to the expected values
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("Hello, world! :D", response.bodyAsText())
+    }
 }
