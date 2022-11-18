@@ -16,11 +16,9 @@ class ApplicationTest {
         }
 
         // Make the actual request
-
         val response = client.get("/")
 
         // Compare the response to the expected values
-
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals("Hello, world! :D", response.bodyAsText())
     }
