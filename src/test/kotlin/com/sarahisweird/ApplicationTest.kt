@@ -22,4 +22,19 @@ class ApplicationTest {
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals("Hello, world! :D", response.bodyAsText())
     }
+
+    @Test
+    fun `foo should return foobar`() = testApplication {
+        // Set up the test application
+        application {
+            module()
+        }
+
+        // Make the actual request
+        val response = client.get("/foo")
+
+        // Compare the response to the expected values
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("foobar", response.bodyAsText())
+    }
 }
